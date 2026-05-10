@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="350" viewBox="0 0 720 350">
+  <rect width="720" height="350" fill="#f0f4f8"/>
+  <!-- Top bar -->
+  <rect width="720" height="44" fill="#1b1b1b"/>
+  <text x="20" y="28" font-family="Segoe UI,sans-serif" font-size="14" fill="#fff">Microsoft Copilot Studio</text>
+  <text x="220" y="28" font-family="Segoe UI,sans-serif" font-size="13" fill="#aaa">IT Helpdesk Bot > Channels</text>
+  <!-- Title -->
+  <text x="40" y="80" font-family="Segoe UI,sans-serif" font-size="18" font-weight="bold" fill="#1b1b1b">Deploy to channels</text>
+  <text x="40" y="100" font-family="Segoe UI,sans-serif" font-size="13" fill="#57606a">Choose where your agent will be available</text>
+  <!-- Channel cards -->
+  <!-- Teams -->
+  <rect x="40" y="120" width="200" height="140" rx="10" fill="#fff" stroke="#0969da" stroke-width="2"/>
+  <rect x="80" y="140" width="40" height="40" rx="8" fill="#5059c9"/>
+  <text x="90" y="166" font-family="Segoe UI,sans-serif" font-size="16" font-weight="bold" fill="#fff">T</text>
+  <text x="130" y="166" font-family="Segoe UI,sans-serif" font-size="14" font-weight="bold" fill="#1b1b1b">Teams</text>
+  <text x="68" y="206" font-family="Segoe UI,sans-serif" font-size="11" fill="#57606a">Microsoft Teams channel</text>
+  <rect x="80" y="224" width="80" height="24" rx="4" fill="#0969da"/>
+  <text x="96" y="240" font-family="Segoe UI,sans-serif" font-size="11" font-weight="bold" fill="#fff">Connect</text>
+  <!-- Web -->
+  <rect x="260" y="120" width="200" height="140" rx="10" fill="#fff" stroke="#d0d7de"/>
+  <rect x="300" y="140" width="40" height="40" rx="8" fill="#2da44e"/>
+  <text x="312" y="166" font-family="Segoe UI,sans-serif" font-size="14" font-weight="bold" fill="#fff">W</text>
+  <text x="350" y="166" font-family="Segoe UI,sans-serif" font-size="14" font-weight="bold" fill="#1b1b1b">Website</text>
+  <text x="292" y="206" font-family="Segoe UI,sans-serif" font-size="11" fill="#57606a">Embed in your website</text>
+  <rect x="300" y="224" width="80" height="24" rx="4" fill="#fff" stroke="#d0d7de"/>
+  <text x="316" y="240" font-family="Segoe UI,sans-serif" font-size="11" fill="#57606a">Connect</text>
+  <!-- Power Apps -->
+  <rect x="480" y="120" width="200" height="140" rx="10" fill="#fff" stroke="#d0d7de"/>
+  <rect x="520" y="140" width="40" height="40" rx="8" fill="#742774"/>
+  <text x="532" y="166" font-family="Segoe UI,sans-serif" font-size="14" font-weight="bold" fill="#fff">P</text>
+  <text x="570" y="166" font-family="Segoe UI,sans-serif" font-size="14" font-weight="bold" fill="#1b1b1b">Power Apps</text>
+  <text x="504" y="206" font-family="Segoe UI,sans-serif" font-size="11" fill="#57606a">Use in Power Apps canvas</text>
+  <rect x="520" y="224" width="80" height="24" rx="4" fill="#fff" stroke="#d0d7de"/>
+  <text x="536" y="240" font-family="Segoe UI,sans-serif" font-size="11" fill="#57606a">Connect</text>
+  <!-- Status bar -->
+  <rect x="40" y="290" width="640" height="40" rx="6" fill="#ddf4ff"/>
+  <text x="60" y="315" font-family="Segoe UI,sans-serif" font-size="13" fill="#0969da">Your agent is ready to be deployed. Select a channel to get started.</text>
+</svg>

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="300" viewBox="0 0 720 300">
+  <rect width="720" height="300" fill="#f0f4f8"/>
+  <!-- Top bar -->
+  <rect width="720" height="44" fill="#1b1b1b"/>
+  <text x="20" y="28" font-family="Segoe UI,sans-serif" font-size="14" fill="#fff">Microsoft Copilot Studio</text>
+  <circle cx="680" cy="22" r="14" fill="#444"/>
+  <text x="675" y="27" font-family="Segoe UI,sans-serif" font-size="12" fill="#fff">U</text>
+  <!-- Sidebar -->
+  <rect x="0" y="44" width="180" height="256" fill="#e8e8e8"/>
+  <rect x="12" y="60" width="156" height="28" rx="4" fill="#fff"/>
+  <text x="24" y="79" font-family="Segoe UI,sans-serif" font-size="12" fill="#333">Home</text>
+  <rect x="12" y="96" width="156" height="28" rx="4" fill="#d0e8ff"/>
+  <text x="24" y="115" font-family="Segoe UI,sans-serif" font-size="12" fill="#0969da">Agents</text>
+  <rect x="12" y="132" width="156" height="28" rx="4" fill="#fff"/>
+  <text x="24" y="151" font-family="Segoe UI,sans-serif" font-size="12" fill="#333">Analytics</text>
+  <rect x="12" y="168" width="156" height="28" rx="4" fill="#fff"/>
+  <text x="24" y="187" font-family="Segoe UI,sans-serif" font-size="12" fill="#333">Settings</text>
+  <!-- Main area -->
+  <text x="220" y="80" font-family="Segoe UI,sans-serif" font-size="20" font-weight="bold" fill="#1b1b1b">Welcome to Copilot Studio</text>
+  <text x="220" y="105" font-family="Segoe UI,sans-serif" font-size="13" fill="#666">Build intelligent agents with AI-powered conversations</text>
+  <!-- Cards -->
+  <rect x="220" y="130" width="220" height="120" rx="8" fill="#fff" stroke="#d0d7de"/>
+  <rect x="236" y="146" width="32" height="32" rx="6" fill="#0969da"/>
+  <text x="245" y="168" font-family="Segoe UI,sans-serif" font-size="16" fill="#fff">+</text>
+  <text x="236" y="198" font-family="Segoe UI,sans-serif" font-size="13" font-weight="bold" fill="#1b1b1b">Create an Agent</text>
+  <text x="236" y="216" font-family="Segoe UI,sans-serif" font-size="11" fill="#666">Start from scratch or template</text>
+  <rect x="460" y="130" width="220" height="120" rx="8" fill="#fff" stroke="#d0d7de"/>
+  <rect x="476" y="146" width="32" height="32" rx="6" fill="#8250df"/>
+  <text x="484" y="168" font-family="Segoe UI,sans-serif" font-size="14" fill="#fff">AI</text>
+  <text x="476" y="198" font-family="Segoe UI,sans-serif" font-size="13" font-weight="bold" fill="#1b1b1b">Explore Templates</text>
+  <text x="476" y="216" font-family="Segoe UI,sans-serif" font-size="11" fill="#666">Pre-built agent scenarios</text>
+</svg>

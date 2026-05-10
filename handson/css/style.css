@@ -1,0 +1,1696 @@
+/* ============================================================
+   HR Data 원큐 Agent Hands-on 가이드
+   디자인 시스템: Notion + Stripe Docs + Vercel Docs
+   ============================================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* ── 컬러 토큰 ── */
+  --bg: #ffffff;
+  --bg-subtle: #fafafa;
+  --bg-muted: #f4f4f5;
+  --border: #e4e4e7;
+  --border-strong: #d4d4d8;
+
+  --text: #18181b;
+  --text-secondary: #3f3f46;
+  --text-muted: #71717a;
+  --text-subtle: #a1a1aa;
+
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-bg: #eff6ff;
+  --primary-border: #bfdbfe;
+
+  --accent-navy: #1e3a8a;
+  --accent-sky: #e0f2fe;
+
+  --success: #16a34a;
+  --success-bg: #f0fdf4;
+  --success-border: #bbf7d0;
+
+  --warning: #ca8a04;
+  --warning-bg: #fefce8;
+  --warning-border: #fde68a;
+
+  --code-bg: #f6f8fa;
+  --code-border: #e4e4e7;
+  --code-text: #24292f;
+
+  /* ── 반경 ── */
+  --r-sm: 4px;
+  --r-md: 6px;
+  --r-lg: 8px;
+  --r-xl: 12px;
+
+  /* ── 그림자 ── */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  /* ── 레이아웃 ── */
+  --sidebar-w: 340px;
+  --sidebar-w-collapsed: 0px;
+  --content-max: 980px;
+  --gutter: 48px;
+
+  /* ── 타이포그래피 ── */
+  --fs-page-title: 32px;
+  --fs-step-title: 22px;
+  --fs-section-title: 16px;
+  --fs-body: 15px;
+  --fs-table: 14px;
+  --fs-compact-table: 13px;
+  --fs-small: 12px;
+  --fs-code: 13px;
+  --fs-code-compact: 12px;
+  --lh-body: 1.65;
+  --lh-step: 1.7;
+  --lh-table: 1.45;
+  --lh-code: 1.35;
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Pretendard",
+    "Apple SD Gothic Neo", "Segoe UI", "Roboto", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text);
+  background: #E2E8F0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   Layout
+   ============================================================ */
+
+.wrapper {
+  display: flex;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  flex-shrink: 0;
+  padding: 28px 0;
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  padding: 48px var(--gutter) 96px;
+}
+
+/* ============================================================
+   Typography
+   ============================================================ */
+
+h1 {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin: 0 0 16px;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 24px 0 8px;
+}
+
+h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 16px 0 6px;
+}
+
+p {
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  line-height: 1.7;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+a:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+/* 파일 다운로드 링크 — 파란색 밑줄 */
+a.file-link {
+  color: var(--primary);
+  text-decoration: underline;
+  font-family: "JetBrains Mono", "SF Mono", "Consolas", "Monaco", monospace;
+  font-size: 13px;
+}
+
+a.file-link:hover {
+  color: var(--primary-hover);
+}
+
+ol,
+ul {
+  padding-left: 22px;
+  margin-bottom: 12px;
+}
+
+li {
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  line-height: 1.7;
+}
+
+/* ============================================================
+   Code
+   ============================================================ */
+
+code {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  padding: 1px 6px;
+  border-radius: var(--r-sm);
+  font-family: "JetBrains Mono", "SF Mono", "Consolas", "Monaco",
+    "SFMono-Regular", monospace;
+  font-size: 0.88em;
+  color: #e11d74;
+  word-break: break-word;
+}
+
+pre {
+  background: #1e1e1e;
+  border: 1px solid #2d2d2d;
+  color: #d4d4d4;
+  padding: 8px 70px 8px 16px;
+  border-radius: var(--r-md);
+  overflow-x: auto;
+  margin: 12px 0;
+  font-size: 13px;
+  line-height: 1.65;
+  position: relative;
+}
+
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.inline-copy-code {
+  display: inline-flex;
+  align-items: center;
+  max-width: min(100%, 980px);
+  margin-left: 8px;
+  vertical-align: middle;
+  border: 1px solid #2d2d2d;
+  border-radius: var(--r-md);
+  background: #1e1e1e;
+  color: #d4d4d4;
+  overflow: hidden;
+}
+
+.inline-copy-code.compact {
+  max-width: 260px;
+}
+
+.step-content > strong.inline-copy-label {
+  display: inline;
+  margin-right: 8px;
+}
+
+.step-content > strong.inline-copy-label.input-label-spaced {
+  margin-left: 14px;
+}
+
+.inline-copy-code code {
+  display: inline-block;
+  min-width: 0;
+  padding: 7px 12px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font-family: "JetBrains Mono", "SF Mono", "Consolas", "Monaco",
+    "SFMono-Regular", monospace;
+  font-size: 0.95em;
+  line-height: 1.5;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.inline-copy-btn {
+  flex: 0 0 auto;
+  margin: 0 10px 0 6px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Pretendard",
+    "Apple SD Gothic Neo", "Segoe UI", "Roboto", system-ui, sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.inline-copy-btn:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: var(--primary-bg);
+}
+
+.inline-copy-btn.copied {
+  color: var(--success);
+  border-color: var(--success);
+  background: var(--success-bg);
+}
+
+/* pre 내부 복사 버튼 — pre 우상단 안쪽 (td-copy-btn과 동일한 사이즈·정렬) */
+.copy-btn {
+  position: absolute;
+  top: 10px;
+  right: 26px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+  opacity: 1;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Pretendard",
+    "Apple SD Gothic Neo", "Segoe UI", "Roboto", system-ui, sans-serif;
+  white-space: nowrap;
+}
+
+.copy-btn:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: var(--primary-bg);
+}
+
+.copy-btn.copied {
+  color: var(--success);
+  border-color: var(--success);
+  background: var(--success-bg);
+}
+
+/* ============================================================
+   Sidebar Navigation
+   ============================================================ */
+
+.sidebar h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 16px 16px;
+  padding: 12px 14px;
+  color: #0f172a;
+  background: #faf4ef;
+  border: 1px solid #eadfd6;
+  border-radius: var(--r-lg);
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.sidebar h2 > span {
+  white-space: nowrap;
+}
+
+.sidebar-title-logo {
+  display: block;
+  width: 34px;
+  height: 30px;
+  flex: 0 0 34px;
+  object-fit: contain;
+}
+
+.sidebar nav {
+  padding: 10px 16px 28px;
+}
+
+.sidebar nav a {
+  display: block;
+  padding: 7px 10px 7px 24px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-left: 0;
+  border-radius: 0;
+  transition: all 0.15s;
+  position: relative;
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar nav a:hover {
+  color: var(--text);
+}
+
+.sidebar nav a.active {
+  color: var(--primary);
+  font-weight: 600;
+  background: var(--primary-bg);
+}
+
+.sidebar nav a.active::before {
+  content: none;
+}
+
+.sidebar nav a.nav-root {
+  padding: 20px 10px 8px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent-navy);
+  letter-spacing: 0.02em;
+}
+
+.sidebar nav a.nav-root.active {
+  color: var(--primary);
+  background: transparent;
+}
+
+/* PART 라벨 */
+.nav-part {
+  display: block;
+  padding: 20px 10px 8px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent-navy);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 토픽 라벨 (Part 하위 sub-header) */
+.nav-topic {
+  display: block;
+  padding: 10px 10px 4px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+.nav-topic::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 13px;
+  width: 3px;
+  height: 14px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+
+/* 서브 항목 */
+.sidebar nav a.nav-sub {
+  padding-left: 40px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.sidebar nav a.nav-overview-child,
+.sidebar nav a.nav-step15-child {
+  padding-left: 40px;
+  margin-left: 0;
+}
+
+.sidebar nav a.nav-overview-child {
+  padding-left: 24px;
+}
+
+.sidebar nav a.nav-step15-child {
+  padding-left: 88px;
+}
+
+.doc-footer {
+  margin: 24px 0 0;
+  padding: 18px 4px 0;
+  border-top: 1px solid rgba(148, 163, 184, 0.45);
+  color: #a1a1aa;
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* ============================================================
+   Section Cards (각 Step / 개요)
+   ============================================================ */
+
+section {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 32px 36px;
+  margin-bottom: 32px;
+  box-shadow: var(--shadow-sm);
+}
+
+section > h2 {
+  border: none;
+  padding: 0;
+  margin: 0 0 20px;
+}
+
+/* Step 카드 상단 토픽 라벨 */
+.step-topic {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  margin: 0 0 6px;
+  letter-spacing: 0.02em;
+}
+
+/* PART 헤더 — 카드 사이의 구획 라벨 */
+.part-header {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent-navy);
+  text-align: left;
+  margin: 64px 0 24px;
+  padding: 0 4px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  border: none;
+  background: none;
+  text-align: center;
+}
+
+.part-header::before,
+.part-header::after {
+  content: "";
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: var(--border-strong);
+  vertical-align: middle;
+  margin: 0 12px;
+}
+
+/* ============================================================
+   Steps
+   ============================================================ */
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 0;
+}
+
+.step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  background: var(--primary-bg);
+  color: var(--primary);
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.step-content {
+  flex: 1;
+  min-width: 0;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.step-content > strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.step-content table,
+.step-content th,
+.step-content td,
+.step-content pre,
+.step-content code,
+.step-content .callout,
+.step-content .test-result,
+.step-content summary {
+  font-size: inherit;
+}
+
+/* Step group — h3 단위 묶음 */
+.step-group {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 20px 24px 12px;
+  margin: 20px 0;
+}
+
+.step-group > h3 {
+  margin: 0 0 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.step-group > p:first-of-type {
+  margin-top: -4px;
+}
+
+/* ============================================================
+   Tables
+   ============================================================ */
+
+.table-wrap {
+  border: 1px solid #E2E8F0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: white;
+  margin: 12px 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* 셀 안 텍스트는 컬럼 폭 안에서 자연스럽게 줄바꿈 */
+td {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* 긴 코드(영문/특수문자)는 어디서든 끊을 수 있게 */
+td code {
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+thead {
+  background: #F8FAFC;
+}
+
+th {
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #0F172A;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+td {
+  padding: 16px;
+  border-bottom: 1px solid #F1F5F9;
+  color: #334155;
+  vertical-align: top;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+/* note-row 직전 행의 bottom border는 제거 (note의 top border와 중복 방지) */
+tbody tr:has(+ tr.note-row) td {
+  border-bottom: none;
+}
+
+tr:hover td {
+  background: #FAFBFC;
+}
+
+/* 항목 컬럼(첫 td) 강조 */
+tbody td:first-child {
+  background: #E9EEF3;
+  color: var(--accent-navy);
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+tr:hover td:first-child {
+  background: #d8e0e8;
+}
+
+/* 표 내부 안내 행 — 입력값 컬럼에만 톤 적용 (지침 셀이 rowspan=2이므로 td 하나만 존재) */
+tbody tr.note-row td {
+  background: var(--primary-bg);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 400;
+  white-space: normal;
+  line-height: 1.65;
+  border-top: 1px solid var(--primary-border);
+  padding: 14px 18px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  width: auto;
+  vertical-align: top;
+}
+
+tbody tr.note-row:hover td {
+  background: var(--primary-bg);
+}
+
+tbody tr.note-row td strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* 입력값 셀 — 코드 박스를 .code-wrap div가 감싸고, 그 안에 복사 버튼이 들어감 */
+tbody td.has-copy {
+  /* position: relative 제거 — .code-wrap이 positioning context */
+}
+
+/* 코드 박스 + 복사 버튼을 묶는 wrap (JS 주입) */
+.code-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+/* 복사 대상 인라인 코드 — 검정 cmd 스타일, 컨텐츠에 맞는 컴팩트 높이 + 좌측 정렬 */
+tbody td.has-copy code,
+tbody td.has-copy a code {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  border: 1px solid #2d2d2d;
+  padding: 7px 64px 7px 14px;
+  font-size: 13px;
+  display: block;
+  width: 100%;
+  text-align: left;
+  border-radius: var(--r-md);
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+  word-break: break-all;
+  box-sizing: border-box;
+}
+
+/* 셀 안의 안내 텍스트 (코드 박스 위에 표시) */
+tbody td .cell-text {
+  display: block;
+  margin-bottom: 10px;
+  color: #334155;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+/* 안내 텍스트 안 인라인 코드 — 일반 inline code 스타일 (light gray pill, 핫핑크 텍스트) */
+tbody td.has-copy .cell-text code,
+tbody td .cell-text code {
+  display: inline;
+  width: auto;
+  background: var(--code-bg);
+  color: #e11d74;
+  border: 1px solid var(--code-border);
+  padding: 2px 8px;
+  font-size: 0.92em;
+  border-radius: var(--r-sm);
+  line-height: 1.5;
+  text-align: left;
+  vertical-align: baseline;
+  margin: 0 2px;
+  box-sizing: border-box;
+}
+
+.td-copy-btn {
+  position: absolute;
+  top: 50%;
+  right: 26px;
+  transform: translateY(-50%);
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  opacity: 1;
+  transition: all 0.15s;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Pretendard",
+    "Apple SD Gothic Neo", "Segoe UI", "Roboto", system-ui, sans-serif;
+  white-space: nowrap;
+}
+
+.td-copy-btn:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: var(--primary-bg);
+}
+
+.td-copy-btn.copied {
+  color: var(--success);
+  border-color: var(--success);
+  background: var(--success-bg);
+}
+
+/* 매핑 필드 표는 한 화면에 더 많은 행이 보이도록 압축 */
+.mapping-field-table {
+  margin-top: 8px;
+}
+
+.mapping-field-note {
+  margin-bottom: 6px;
+  line-height: 1.35;
+}
+
+.mapping-field-table th {
+  padding: 8px 12px;
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.mapping-field-table td {
+  padding: 6px 12px;
+  font-size: 13px;
+  line-height: 1.25;
+  vertical-align: middle;
+}
+
+.mapping-field-table tbody td.has-copy code,
+.mapping-field-table tbody td.has-copy a code {
+  min-height: 0;
+  padding: 6px 54px 6px 10px;
+  font-size: 12px;
+  line-height: 1.2;
+  border-radius: 6px;
+}
+
+.mapping-field-table .td-copy-btn {
+  right: 12px;
+  padding: 3px 9px;
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.split-variable-table th,
+.split-variable-table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.split-variable-table th:nth-child(1),
+.split-variable-table td:nth-child(1) {
+  width: 16%;
+}
+
+.split-variable-table th:nth-child(2),
+.split-variable-table td:nth-child(2) {
+  width: 12%;
+}
+
+.split-variable-table th:nth-child(3),
+.split-variable-table td:nth-child(3) {
+  width: 72%;
+}
+
+.split-variable-table td.has-copy {
+  text-align: center;
+}
+
+.split-variable-table td.has-copy .code-wrap {
+  display: inline-block;
+  width: min(100%, 920px);
+}
+
+.split-variable-table td.has-copy code {
+  text-align: left;
+}
+
+/* 25개 필드 매핑 표는 많은 행을 한 화면에 볼 수 있도록 압축 */
+.flow-field-mapping-table th {
+  padding: 7px 10px;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.flow-field-mapping-table td {
+  padding: 5px 10px;
+  font-size: 13px;
+  line-height: 1.25;
+  vertical-align: middle;
+}
+
+.flow-field-mapping-table th:nth-child(1),
+.flow-field-mapping-table td:nth-child(1) {
+  width: 44px;
+  text-align: center;
+}
+
+.flow-field-mapping-table th:nth-child(2),
+.flow-field-mapping-table td:nth-child(2) {
+  width: 18%;
+}
+
+.flow-field-mapping-table th:nth-child(3),
+.flow-field-mapping-table td:nth-child(3) {
+  width: 96px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.flow-field-mapping-table tbody td .cell-text code {
+  font-size: 12px;
+  line-height: 1.25;
+  padding: 1px 5px;
+}
+
+.flow-field-mapping-table td.has-copy code,
+.flow-field-mapping-table td.has-copy a code {
+  min-height: 0;
+  padding: 6px 58px 6px 10px;
+  font-size: 12px;
+  line-height: 1.25;
+  border-radius: 6px;
+}
+
+.flow-field-mapping-table .td-copy-btn {
+  right: 12px;
+  padding: 3px 9px;
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.compact-file-table th,
+.compact-file-table td {
+  padding: 7px 10px;
+  font-size: 13px;
+  line-height: 1.25;
+  vertical-align: middle;
+}
+
+.compact-file-table {
+  width: calc(100% - 56px);
+  margin: 8px 28px 14px;
+  border: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+  box-sizing: border-box;
+  table-layout: fixed;
+}
+
+.table-wrap:has(> .compact-file-table) {
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  background: transparent;
+  margin: 0;
+}
+
+.compact-file-table thead {
+  background: transparent;
+}
+
+.compact-file-table th {
+  background: #f8fafc;
+  border-bottom: 1px solid #dbe3ec;
+  color: #0f172a;
+}
+
+.compact-file-table td {
+  background: #fff !important;
+  border-bottom: 0;
+  color: #334155;
+}
+
+.compact-file-table tbody td:first-child,
+.compact-file-table tbody tr:hover td:first-child,
+.compact-file-table tbody tr:hover td {
+  background: #fff !important;
+}
+
+.compact-file-table tbody tr:not(.file-group-start) td {
+  border-top: 1px solid #eef2f7;
+}
+
+.compact-file-table tbody tr.file-group-start:not(:first-child) td {
+  border-top: 3px double #cbd5e1;
+}
+
+.compact-file-table tbody tr.file-group-start td[rowspan] {
+  background: #e9eef3 !important;
+  color: var(--accent-navy);
+  font-weight: 600;
+}
+
+.compact-file-table tbody tr.file-group-start:hover td[rowspan] {
+  background: #dfe7ef !important;
+}
+
+.compact-file-table .file-col {
+  width: 24%;
+}
+
+.compact-file-table .type-col {
+  width: 96px;
+}
+
+.compact-file-table .action-col {
+  width: auto;
+}
+
+.compact-file-table th:nth-child(2),
+.compact-file-table tbody td:not([rowspan]):first-child,
+.compact-file-table tbody td:nth-child(2):not([rowspan]) {
+  white-space: nowrap;
+}
+
+.compact-file-table td code {
+  font-size: 12px;
+  padding: 1px 5px;
+}
+
+.compact-file-table td.has-copy code {
+  min-height: 0;
+  padding: 6px 58px 6px 10px;
+  font-size: 12px;
+  line-height: 1.2;
+  border-radius: 6px;
+}
+
+/* ============================================================
+   Callouts (Notion 스타일)
+   ============================================================ */
+
+.callout {
+  background: var(--primary-bg);
+  border: 1px solid var(--primary-border);
+  border-left: 3px solid var(--primary);
+  border-radius: var(--r-md);
+  padding: 12px 16px;
+  margin: 16px 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.callout strong {
+  color: var(--text);
+}
+
+.callout.warning {
+  background: var(--warning-bg);
+  border-color: var(--warning-border);
+  border-left-color: var(--warning);
+}
+
+/* ============================================================
+   Test Result (성공 박스)
+   ============================================================ */
+
+.test-result {
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  border-left: 3px solid var(--success);
+  border-radius: var(--r-md);
+  padding: 12px 16px;
+  margin: 16px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #14532d;
+}
+
+.test-result.success {
+  font-size: 14px;
+  padding: 14px 18px;
+}
+
+/* ============================================================
+   Images / SVG
+   ============================================================ */
+
+.img-box {
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  margin: 5px 0;
+  overflow: hidden;
+  background: var(--bg);
+  position: relative;
+  box-shadow: var(--shadow-sm);
+}
+
+.img-box.no-border-img {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.img-box img {
+  width: 100%;
+  display: block;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='15' cy='15' r='9' fill='none' stroke='%232563eb' stroke-width='3'/%3E%3Cline x1='22' y1='22' x2='32' y2='32' stroke='%232563eb' stroke-width='4' stroke-linecap='round'/%3E%3Cline x1='15' y1='10' x2='15' y2='20' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='10' y1='15' x2='20' y2='15' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E") 18 18, zoom-in;
+  transition: opacity 0.2s;
+}
+
+.img-box:hover img {
+  opacity: 0.9;
+}
+
+.img-caption {
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 8px 14px;
+  background: var(--bg-subtle);
+  border-top: 1px solid var(--border);
+}
+
+/* SVG 박스 */
+.svg-box {
+  position: relative;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='15' cy='15' r='9' fill='none' stroke='%232563eb' stroke-width='3'/%3E%3Cline x1='22' y1='22' x2='32' y2='32' stroke='%232563eb' stroke-width='4' stroke-linecap='round'/%3E%3Cline x1='15' y1='10' x2='15' y2='20' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='10' y1='15' x2='20' y2='15' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E") 18 18, zoom-in;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  margin: 24px 0;
+  padding: 16px;
+  background: var(--bg);
+  transition: background 0.15s;
+}
+
+.svg-box:hover {
+  background: var(--bg-subtle);
+}
+
+/* Step 섹션 안의 모든 이미지/박스는 step-content와 좌측 정렬 (step-number 26px + gap 14px = 40px) */
+section[id^="step"] .img-box,
+section[id^="step"] .svg-box,
+section[id^="step"] .schema-toggle,
+section[id^="step"] .test-result {
+  margin-left: 40px;
+}
+
+section[id^="step"] .step-content .img-box,
+section[id^="step"] .step-content .svg-box,
+section[id^="step"] .step-content .schema-toggle,
+section[id^="step"] .step-content .test-result {
+  margin-left: 0;
+}
+
+/* ============================================================
+   Lightbox
+   ============================================================ */
+
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.85);
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+}
+
+.lightbox.active {
+  display: flex;
+}
+
+.lightbox img {
+  max-width: 92vw;
+  max-height: 92vh;
+  border-radius: var(--r-md);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+#svg-lightbox-content {
+  background: #fff;
+  border-radius: var(--r-lg);
+  padding: 32px 40px;
+  max-width: 92vw;
+  max-height: 92vh;
+  overflow: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+#svg-lightbox-content svg {
+  width: 100%;
+  min-width: 900px;
+  height: auto;
+  display: block;
+}
+
+/* ============================================================
+   Schema Toggle (펼침)
+   ============================================================ */
+
+.schema-toggle {
+  margin: 16px 0;
+  border: 1px solid var(--primary-border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.schema-toggle summary {
+  padding: 14px 20px;
+  background: var(--primary-bg);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--primary);
+  list-style: none;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.15s;
+}
+
+.schema-toggle summary::-webkit-details-marker {
+  display: none;
+}
+
+.schema-toggle summary::before {
+  content: "▶";
+  color: var(--text-muted);
+  font-size: 9px;
+  display: inline-block;
+  transition: transform 0.15s;
+}
+
+.schema-toggle[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.schema-toggle summary:hover {
+  background: #dbeafe;
+}
+
+.schema-toggle[open] summary {
+  border-bottom: 1px solid var(--primary-border);
+}
+
+.schema-toggle.action-toggle summary {
+  background: linear-gradient(90deg, #dbeafe 0%, #eff6ff 100%);
+  color: var(--text);
+  gap: 16px;
+  border: 1px solid #3b82f6;
+  border-left: 5px solid #2563eb;
+  border-radius: var(--r-md);
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.12);
+}
+
+.schema-toggle.action-toggle summary::before {
+  display: none;
+}
+
+.schema-toggle.action-toggle summary:hover {
+  background: #bfdbfe;
+  border-color: #2563eb;
+}
+
+.schema-toggle.action-toggle .expand-title {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.schema-toggle.action-toggle .expand-state {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.schema-toggle.action-toggle .expand-state::before {
+  content: "펼치기";
+}
+
+.schema-toggle.action-toggle .expand-state::after {
+  content: "▾";
+  font-size: 13px;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+.schema-toggle.action-toggle[open] .expand-state::before {
+  content: "접기";
+}
+
+.schema-toggle.action-toggle[open] .expand-state::after {
+  content: "▴";
+}
+
+.schema-toggle.neutral-toggle {
+  margin: 16px 0 24px;
+}
+
+section[id^="step"] .schema-toggle.neutral-toggle {
+  margin-left: 0;
+}
+
+.schema-toggle.neutral-toggle summary {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  border-left-color: #64748b;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+.schema-toggle.neutral-toggle summary:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+}
+
+.schema-toggle.neutral-toggle .expand-title {
+  color: #1f2937;
+}
+
+.schema-toggle.neutral-toggle .expand-state {
+  color: #475569;
+}
+
+.schema-toggle pre {
+  margin: 0;
+  border: none;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+}
+
+/* ============================================================
+   Plain Reference Toggle
+   보조 안내 섹션용 무색 접기/펼치기
+   ============================================================ */
+
+.compact-reference-section {
+  padding: 24px 36px;
+}
+
+.plain-toggle {
+  margin: 0;
+}
+
+.plain-toggle summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  color: var(--text);
+}
+
+.plain-toggle summary::-webkit-details-marker {
+  display: none;
+}
+
+.plain-toggle summary > span:first-child {
+  font-size: var(--fs-section-title);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.plain-toggle-state {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.plain-toggle-state::before {
+  content: "펼치기";
+}
+
+.plain-toggle[open] .plain-toggle-state::before {
+  content: "접기";
+}
+
+.plain-toggle-state::after {
+  content: " ▾";
+}
+
+.plain-toggle[open] .plain-toggle-state::after {
+  content: " ▴";
+}
+
+.plain-toggle-body {
+  margin-top: 20px;
+}
+
+/* ============================================================
+   UI Tags (버튼명 / 메뉴명)
+   ============================================================ */
+
+.btn-name {
+  background: var(--accent-sky);
+  padding: 1px 6px;
+  border-radius: var(--r-sm);
+  font-weight: 600;
+  color: #075985;
+  white-space: nowrap;
+  font-size: inherit;
+}
+
+/* ============================================================
+   Final Typography / Black Code Normalization
+   문서 전체 폰트 크기와 복사 가능한 black 화면을 최종 통일
+   ============================================================ */
+
+body {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+h1 {
+  font-size: var(--fs-page-title);
+}
+
+h2,
+section > h2 {
+  font-size: var(--fs-step-title);
+}
+
+h3,
+.step-group > h3 {
+  font-size: var(--fs-section-title);
+}
+
+.nav-topic {
+  font-size: var(--fs-table);
+}
+
+.sidebar h2 {
+  font-size: 16px;
+}
+
+.nav-part,
+.sidebar nav a.nav-root {
+  font-size: var(--fs-section-title);
+}
+
+.sidebar nav a {
+  font-size: var(--fs-table);
+}
+
+.content p,
+.content li,
+.step-content,
+.step-content > strong {
+  font-size: var(--fs-body);
+  line-height: var(--lh-step);
+}
+
+.step-topic,
+.img-caption,
+.step-number {
+  font-size: var(--fs-small);
+}
+
+.callout,
+.test-result {
+  font-size: var(--fs-table);
+  line-height: var(--lh-body);
+}
+
+table th,
+table td,
+.step-content table,
+.step-content th,
+.step-content td {
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+}
+
+.mapping-field-table th,
+.mapping-field-table td,
+.flow-field-mapping-table th,
+.flow-field-mapping-table td,
+.compact-file-table th,
+.compact-file-table td {
+  font-size: var(--fs-compact-table);
+  line-height: 1.3;
+}
+
+.btn-name {
+  font-size: inherit;
+  line-height: 1.25;
+}
+
+code {
+  font-size: 0.92em;
+  line-height: 1.35;
+}
+
+pre {
+  display: block;
+  padding: 8px 70px 8px 16px;
+  font-size: var(--fs-code);
+  line-height: var(--lh-code);
+  vertical-align: middle;
+}
+
+pre code {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.copy-btn {
+  top: 50%;
+  right: 18px;
+  transform: translateY(-50%);
+  padding: 3px 10px;
+  font-size: var(--fs-small);
+  line-height: 1.2;
+}
+
+.inline-copy-code {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.inline-copy-code code {
+  padding: 7px 12px;
+  font-size: var(--fs-code);
+  line-height: var(--lh-code);
+}
+
+.inline-copy-btn {
+  padding: 3px 10px;
+  font-size: var(--fs-small);
+  line-height: 1.2;
+}
+
+tbody td.has-copy {
+  vertical-align: middle;
+}
+
+.code-wrap {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 0;
+}
+
+tbody td.has-copy code,
+tbody td.has-copy a code {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  padding: 7px 64px 7px 14px;
+  font-size: var(--fs-code);
+  line-height: var(--lh-code);
+  vertical-align: middle;
+}
+
+.td-copy-btn {
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  padding: 3px 10px;
+  font-size: var(--fs-small);
+  line-height: 1.2;
+}
+
+.mapping-field-table tbody td.has-copy code,
+.mapping-field-table tbody td.has-copy a code,
+.flow-field-mapping-table td.has-copy code,
+.flow-field-mapping-table td.has-copy a code,
+.compact-file-table td.has-copy code {
+  padding: 5px 52px 5px 10px;
+  font-size: var(--fs-code-compact);
+  line-height: 1.25;
+}
+
+.mapping-field-table .td-copy-btn,
+.flow-field-mapping-table .td-copy-btn,
+.compact-file-table .td-copy-btn {
+  right: 10px;
+  padding: 3px 8px;
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+tbody td.has-copy .cell-text code,
+tbody td .cell-text code,
+.flow-field-mapping-table tbody td .cell-text code {
+  font-size: 0.92em;
+  line-height: 1.35;
+}
+
+/* ============================================================
+   Final Table Divider Normalization
+   모든 표의 행 구분선을 명확하게 통일
+   ============================================================ */
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+thead th,
+table th {
+  border-bottom: 1px solid #cbd5e1;
+}
+
+tbody td,
+table td {
+  border-bottom: 1px solid #dbe3ec;
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+tbody tr:has(+ tr.note-row) td {
+  border-bottom: 1px solid #dbe3ec;
+}
+
+tbody tr.note-row td {
+  border-top: 1px solid #cbd5e1;
+  border-bottom: 1px solid #dbe3ec;
+}
+
+.mapping-field-table td,
+.flow-field-mapping-table td,
+.split-variable-table td {
+  border-bottom: 1px solid #dbe3ec;
+}
+
+.mapping-field-table tr:last-child td,
+.flow-field-mapping-table tr:last-child td,
+.split-variable-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.compact-file-table th {
+  border-bottom: 1px solid #cbd5e1;
+}
+
+.compact-file-table td {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.compact-file-table tbody tr:not(.file-group-start) td {
+  border-top: 0;
+}
+
+.compact-file-table tbody tr.file-group-start:not(:first-child) td {
+  border-top: 2px solid #cbd5e1;
+}
+
+.compact-file-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .wrapper {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .content {
+    max-width: 100%;
+    padding: 24px 20px 60px;
+  }
+
+  section {
+    padding: 20px;
+  }
+
+  section[id^="step"] .img-box,
+  section[id^="step"] .svg-box,
+  section[id^="step"] .schema-toggle,
+  section[id^="step"] .test-result {
+    margin-left: 0;
+  }
+}
