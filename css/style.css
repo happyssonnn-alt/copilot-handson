@@ -366,13 +366,6 @@ pre code {
   white-space: nowrap;
 }
 
-.sidebar-title-logo {
-  display: block;
-  width: 34px;
-  height: 30px;
-  flex: 0 0 34px;
-  object-fit: contain;
-}
 
 .sidebar nav {
   padding: 10px 16px 28px;
